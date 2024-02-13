@@ -1,7 +1,10 @@
-﻿using System.Diagnostics; // no se que es esto, simplemente aparecio 
+﻿using System.Diagnostics;
+using System.Threading.Channels; // no se que es esto, simplemente aparecio 
 
 // Declaracion de las variables
 
+string Identificacion = "";// variable para la identificacion de la cedula
+bool encontrado = false;// variable para identificar que la cedula si fue entrada true, o si no false
 int op = 0;// variable para el operador del menu; no se asusten puse 3 para cuando este haciendo pruebas no tenga que poner 10 estudiantes, luego se cambia
 string[] Cedulas = new string[3];//arreglo de las cedulas
 string[] Nombres = new string[3]; ;//arreglo de los nombres 
@@ -16,13 +19,13 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
     {
         case 2://incluir estudiantes, esta parte la tiene que hacer otro compañero pero la tenia que hacer para ver si mi parte funciona
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
-                Console.WriteLine("Ponga la cedula del estudiante");
+                Console.WriteLine("Ponga la cedula del estudiante: ");
                 Cedulas[i] = Console.ReadLine();
-                Console.WriteLine("Ponga el nombre del estudiante");
+                Console.WriteLine("Ponga el nombre del estudiante: ");
                 Nombres[i] = Console.ReadLine();
-                Console.WriteLine("Ponga el Promedio del estudiante");
+                Console.WriteLine("Ponga el Promedio del estudiante: ");
                 promedio[i] = int.Parse(Console.ReadLine());
                 if (promedio[i] >= 70 )
                 {
@@ -38,8 +41,8 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
 
             break;
 
-        case 3:
-            for (int i = 0; i < 3; i++)
+        case 3:// consultar Estudiantes
+            for (int i = 0; i < 2; i++)
             {
                 Console.WriteLine($"Cedula: {Cedulas[i]}");
                 Console.WriteLine($"Nombre: {Nombres[i]}");
@@ -49,9 +52,74 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
             }
             break;
 
-        case 4:
+        case 4:// Modificar estudiantes 
+            Console.ForegroundColor = ConsoleColor.DarkRed;//Estetico
+            Console.WriteLine(" Digite la cedula del estudiante que quiere modificar: ");
+            Identificacion = Console.ReadLine();
+            for (int i = 0; i < Cedulas.Length; i++) // dentro del bucle hago que la variable identificacion repase el arreglo de cedulas 
+            {
+                if (Identificacion.Equals(Cedulas[i]))// aqui hago que si la variable identificacion dectacta que si hay una copia dentro del arreglo de cedulas haga lo siguiente
+                {
+                    encontrado = true; // esto es para decir que si esta la cedula 
+                    Console.WriteLine($""""
+                    Cedula {Cedulas[i]} Encontrada
+                    """");
+                    Console.WriteLine("Ponga el nombre del estudiante: ");
+                    Nombres[i] = Console.ReadLine();
+                    Console.WriteLine("Ponga el Promedio del estudiante: ");
+                    promedio[i] = int.Parse(Console.ReadLine());
+                    if (promedio[i] >= 70)
+                    {
+                        Condicion[i] = "Aprobado";
+                    }
+                    else
+                    {
+                        Condicion[i] = "Reprobado";
+                    }
+                    Console.WriteLine();
+                    break; // Salir del bucle una vez que se haya encontrado la cédula
+                }
+            }
+            if (encontrado==false)// aqui se usa el booleano para decir de forma consisa despuesde que la variable identificacion recorriese todo el arreglo de que esta la cedula que se quiere modificar
+            {
+                Console.WriteLine($" La Cedula {Identificacion} no esta dentro de la Cedulas Estudiantiles Registradas");
 
+            }
             break;
+
+
+        case 5:// Eliminar Estudiantes
+            Console.ForegroundColor = ConsoleColor.White;//Estetico
+            Console.WriteLine(" Digite la cedula del estudiante que quiere Eliminar: ");
+            Identificacion = Console.ReadLine();
+            for (int i = 0; i < Cedulas.Length; i++) // dentro del bucle hago que la variable identificacion repase el arreglo de cedulas 
+            {
+                if (Identificacion.Equals(Cedulas[i]))// aqui hago que si la variable identificacion dectacta que si hay una copia dentro del arreglo de cedulas haga lo siguiente
+                {
+                    encontrado = true; // esto es para decir que si esta la cedula 
+                    Console.WriteLine($""""
+                    Cedula {Cedulas[i]} Encontrada
+                    """");
+                    Cedulas[i] = "";
+                    Nombres[i] = "";
+                    promedio[i] = 0;
+                    promedio[i] = 0;
+                    Condicion[i] = "";
+                    Console.WriteLine("Datos Eliminados Exitosamente");
+                    Console.WriteLine();
+                    break; // Salir del bucle una vez que se haya encontrado la cédula
+                }
+            }
+            if (encontrado == false)// aqui se usa el booleano para decir de forma consisa despuesde que la variable identificacion recorriese todo el arreglo de que esta la cedula que se quiere modificar
+            {
+                Console.WriteLine($" La Cedula {Identificacion} no esta dentro de la Cedulas Estudiantiles Registradas");
+
+            }
+            break;
+            
+
+
+
     }
 
 
@@ -60,7 +128,7 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
 }
 
 Console.WriteLine(@" 
-Gracias");// un detalle final nada mas 
+Gracias por usar nuestro servicio");// un detalle final nada mas 
 
 static int Menu(int op) // Esta una funcion, que crea el menu, se que la compañera se encargaba de esta parte pero es que ocupa un menu para hacer mi parte 
 {
