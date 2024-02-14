@@ -17,6 +17,21 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
     op = Menu(op);// llamo ala funcion Menu, y declaro que el valor de op dentro del while sera decido por la funcion
     switch (op)
     {
+        case 1:
+            Console.WriteLine();
+            for (int i = 0; i < Nombres.Length; i++)
+            {
+                Nombres[i] = "";
+
+                Cedulas[i] = "";
+
+                promedio[i] = 0;
+
+                Condicion[i] = "";
+            }
+            Console.WriteLine("Vectores iniciados Exitosamente");
+            break;
+      
         case 2://incluir estudiantes, esta parte la tiene que hacer otro compañero pero la tenia que hacer para ver si mi parte funciona
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             for (int i = 0; i < 2; i++)
