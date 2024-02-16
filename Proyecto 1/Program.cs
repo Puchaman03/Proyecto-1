@@ -17,7 +17,8 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
     op = Menu(op);// llamo ala funcion Menu, y declaro que el valor de op dentro del while sera decido por la funcion
     switch (op)
     {
-        case 1:
+        case 1:// Inicializacion de vectores
+
             Console.WriteLine();
             for (int i = 0; i < Nombres.Length; i++)
             {
@@ -42,6 +43,22 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
                 Nombres[i] = Console.ReadLine();
                 Console.WriteLine("Ponga el Promedio del estudiante: ");
                 promedio[i] = int.Parse(Console.ReadLine());
+                try
+                {
+                    while (promedio[i] > 100 || promedio[i] < 0)
+                    {
+                        Console.WriteLine("El promedio no puede ser menor a 0 o mayor a 100, Digite el promedio del estudiante");
+                        promedio[i] = int.Parse(Console.ReadLine());
+
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine(" Error, digite nuevamente el promedio del estudiante");
+                    
+
+                }
+
                 if (promedio[i] >= 70 )
                 {
                     Condicion[i] = "Aprobado";
