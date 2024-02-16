@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Threading.Channels; // no se que es esto, simplemente aparecio 
 
 // Declaracion de las variables
@@ -6,10 +7,10 @@ using System.Threading.Channels; // no se que es esto, simplemente aparecio
 string Identificacion = "";// variable para la identificacion de la cedula
 bool encontrado = false;// variable para identificar que la cedula si fue entrada true, o si no false
 int op = 0;// variable para el operador del menu; no se asusten puse 3 para cuando este haciendo pruebas no tenga que poner 10 estudiantes, luego se cambia
-string[] Cedulas = new string[3];//arreglo de las cedulas
-string[] Nombres = new string[3]; ;//arreglo de los nombres 
-int[] promedio = new int[3]; ;//arreglo de los promedios
-string[] Condicion = new string[3]; ;//arreglo de las condiciones de los estudiantes
+string[] Cedulas = new string[10];//arreglo de las cedulas
+string[] Nombres = new string[10]; ;//arreglo de los nombres 
+int[] promedio = new int[10]; ;//arreglo de los promedios
+string[] Condicion = new string[10]; ;//arreglo de las condiciones de los estudiantes
 
 
 while (op < 7) // con este while hare funcionar el menu, hasta que el usuario ponga una numero = o > que 7;
@@ -35,27 +36,28 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
       
         case 2://incluir estudiantes, esta parte la tiene que hacer otro compañero pero la tenia que hacer para ver si mi parte funciona
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine("Ponga la cedula del estudiante: ");
+                Console.WriteLine($"Ponga la cedula del estudiante {i+1}: ");
                 Cedulas[i] = Console.ReadLine();
                 Console.WriteLine("Ponga el nombre del estudiante: ");
                 Nombres[i] = Console.ReadLine();
                 Console.WriteLine("Ponga el Promedio del estudiante: ");
-                promedio[i] = int.Parse(Console.ReadLine());
                 try
                 {
+                    promedio[i] = int.Parse(Console.ReadLine());
                     while (promedio[i] > 100 || promedio[i] < 0)
                     {
                         Console.WriteLine("El promedio no puede ser menor a 0 o mayor a 100, Digite el promedio del estudiante");
                         promedio[i] = int.Parse(Console.ReadLine());
-
+                        
                     }
+                    
                 }
                 catch (FormatException)
                 {
                     Console.WriteLine(" Error, digite nuevamente el promedio del estudiante");
-                    
+        
 
                 }
 
@@ -74,7 +76,7 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
             break;
 
         case 3:// consultar Estudiantes
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Console.WriteLine($"Cedula: {Cedulas[i]}");
                 Console.WriteLine($"Nombre: {Nombres[i]}");
@@ -99,6 +101,20 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
                     Console.WriteLine("Ponga el nombre del estudiante: ");
                     Nombres[i] = Console.ReadLine();
                     Console.WriteLine("Ponga el Promedio del estudiante: ");
+                    try
+                    {
+                        promedio[i] = int.Parse(Console.ReadLine());
+                        while (promedio[i] > 100 || promedio[i] < 0)
+                        {
+                            Console.WriteLine("El promedio no puede ser menor a 0 o mayor a 100, Digite el promedio del estudiante");
+                            promedio[i] = int.Parse(Console.ReadLine());
+
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine(" Error, digite nuevamente el promedio del estudiante");
+                    }
                     promedio[i] = int.Parse(Console.ReadLine());
                     if (promedio[i] >= 70)
                     {
@@ -148,7 +164,137 @@ while (op < 7) // con este while hare funcionar el menu, hasta que el usuario po
 
             }
             break;
-            
+
+        case 6: // submenu Reportes
+            int opcionReporte = 0;
+            while (opcionReporte != 3)
+            {
+                Console.WriteLine(@"
+***Submenú Reportes*****
+
+1. Reporte Estudiantes por Condición
+2. Reporte Todos los Datos
+3. Regresar al Menú Principal
+");
+
+                try
+                {
+                    Console.Write("Por favor, seleccione una opción: ");
+                    opcionReporte = int.Parse(Console.ReadLine());
+                    if (opcionReporte <= 0 || opcionReporte > 3)
+                    //Se almacena la la opcion del submenu y se valida que sea mayor a 0 y menor que 4
+                    {
+                        Console.WriteLine("\nPor favor, seleccione una opción válida.");
+                        opcionReporte = 0;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("\nPor favor, digite una opción válida (numero entero).");
+                    opcionReporte = 0;
+                }
+
+                switch (opcionReporte)
+                {
+                    case 1: // Reporte estudiantes por condicion
+                        Console.WriteLine("\nReporte Estudiantes por Condición:");
+                        Console.WriteLine(" ");
+                        Console.WriteLine("==================================================");
+                        Console.WriteLine("** 1. Aprobado, 2. Reprobado, 3. Aplazado **");
+                        Console.WriteLine("==================================================");
+                        Console.WriteLine(" ");
+                        Console.Write("Ingrese el número correspondiente a la condición de los estudiantes a reportar: "); //menu para elegir tipo de estudiante
+                        int opcionCondicion = int.Parse(Console.ReadLine());
+                        string condicion;
+                        // se hace una variable de tipo string llamada condicion que se utiliza para
+                        // almacenar la condicion seleccionada por el usuario en forma de texto
+                        switch (opcionCondicion)
+                        {
+                            case 1:
+                                condicion = "Aprobado";
+                                break;
+                            case 2:
+                                condicion = "Reprobado";
+                                break;
+                            case 3:
+                                condicion = "Aplazado";
+                                break;
+                            default:
+                                Console.WriteLine("\nOpción invalida. Seleccionando por defecto Aprobado.");
+                                condicion = "Aprobado"; // en caso de seleccionar algo invalido automaticamente se elije la opcion 1 osea aprobado
+                                break;
+                        }
+                        Console.WriteLine("\nCedula\tNombre\tPromedio\tCondición");
+                        Console.WriteLine("================================================");
+                        foreach (var estudianteIndex in Enumerable.Range(0, Cedulas.Length))
+                        // Este bucle foreach recorre una secuencia de numeros del 0 al tamaño del arreglo Cedulas.Length
+                        // estos numeros representan los indices de los estudiantes en los arreglos 
+                        {
+                            if (!string.IsNullOrEmpty(Cedulas[estudianteIndex]) && Condicion[estudianteIndex] == condicion)
+                            // imprimir solo estudiantes registrados y con la condición que se le indica
+                            {
+                                Console.WriteLine($"{Cedulas[estudianteIndex]}\t{Nombres[estudianteIndex]}\t{promedio[estudianteIndex]}\t\t{Condicion[estudianteIndex]}");
+                            }//si lo anterior se cumple aqui se imprime la información del estudiante en la consola
+                        }
+                        Console.WriteLine("================================================");
+                        break;
+
+                    case 2: // reporte Todos los Datos
+                        Console.WriteLine("\nReporte Todos los Datos:");
+                        Console.WriteLine("Cedula\tNombre\tPromedio\tCondición");
+                        Console.WriteLine("===========================================================================");
+                        foreach (var estudianteIndex in Enumerable.Range(0, Cedulas.Length))
+                        //este bucle se repite la cantidad que tenga la longitud el arreglo
+                        {
+                            if (!string.IsNullOrEmpty(Cedulas[estudianteIndex])) // aqui se verifica que el espacio no este vacio 
+                            {
+                                Console.WriteLine($"{Cedulas[estudianteIndex]}\t{Nombres[estudianteIndex]}\t{promedio[estudianteIndex]}\t\t{Condicion[estudianteIndex]}");
+                            }//se imprimen los estudiantes registrados
+                        }
+                        Console.WriteLine("===========================================================================");
+                        // estadísticas
+                        int cantidadEstudiantes = 0;
+                        int promedioMayor = int.MinValue;
+                        int promedioMenor = int.MaxValue;
+                        string estudiantePromedioMayor = "";
+                        string estudiantePromedioMenor = "";
+                        foreach (var estudianteIndex in Enumerable.Range(0, Cedulas.Length))
+                        {
+                            if (!string.IsNullOrEmpty(Cedulas[estudianteIndex]))
+                            {
+                                //este procediminto recorre todo el arreglo hasta filtrar y encontrar el promedio mayor y menor
+                                cantidadEstudiantes++;
+                                if (promedio[estudianteIndex] > promedioMayor)
+                                {
+                                    promedioMayor = promedio[estudianteIndex];
+                                    estudiantePromedioMayor = Nombres[estudianteIndex];
+                                }
+                                if (promedio[estudianteIndex] < promedioMenor)
+                                {
+                                    promedioMenor = promedio[estudianteIndex];
+                                    estudiantePromedioMenor = Nombres[estudianteIndex];
+                                }
+                            }
+                        }
+                        Console.WriteLine(" ");
+                        Console.WriteLine(" ");
+                        Console.WriteLine("============================================================");
+                        Console.WriteLine($"\nCantidad de Estudiantes: {cantidadEstudiantes}"); // se imprimen las estadisticas amteriormente calculadas
+                        Console.WriteLine(" ");
+                        Console.WriteLine($"Estudiantes con promedio mayor:  ({estudiantePromedioMayor})  (Promedio: {promedioMayor})");
+                        Console.WriteLine($"Estudiantes con promedio menor:  ({estudiantePromedioMenor})  (Promedio: {promedioMenor})\n");
+                        Console.WriteLine("============================================================");
+                        break;
+                    case 3: // regresar al menu Principal
+                        Console.WriteLine("\nRegresando al Menú Principal...");
+                        break;
+                    default:
+                        Console.WriteLine("\nOpción inválida. Por favor, seleccione una opción válida.");
+                        break;
+                }
+            }
+            break;
+
 
 
 
@@ -206,3 +352,4 @@ Porfavor astengase de poner numeros negativos o nulos
 
     return op;
 }
+
